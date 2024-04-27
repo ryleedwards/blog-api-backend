@@ -1,8 +1,8 @@
 import mongoose, { Schema } from 'mongoose';
 import { DateTime } from 'luxon';
-import { mongooseUniqueValidator as uniqueValidator } from 'mongoose-unique-validator';
+import mongooseUniqueValidator from 'mongoose-unique-validator';
 
-const UserSchema = new Schema(
+const userSchema = new Schema(
   {
     username: { type: String, required: true, index: true, unique: true },
     email: {
@@ -20,7 +20,7 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
+userSchema.plugin(mongooseUniqueValidator, { message: 'is already taken.' });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', userSchema);
 export default User;
