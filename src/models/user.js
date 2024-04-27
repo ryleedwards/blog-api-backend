@@ -16,6 +16,7 @@ const userSchema = new Schema(
     lastName: { type: String },
     hash: { type: String },
     salt: { type: String },
+    role: { type: mongoose.Types.ObjectId, ref: 'Role' },
   },
   { timestamps: true }
 );
