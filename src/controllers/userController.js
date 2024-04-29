@@ -11,5 +11,5 @@ export const user_list = asyncHandler(async (req, res, next) => {
       username: 1,
     })
     .exec();
-  return allUsers;
+  res.send(allUsers);
 });
