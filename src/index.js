@@ -3,6 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import models from './models/index.js';
+import routes from './routes/index.js';
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use(cors());
 app.get('/', (req, res) => {
   res.send('hello world');
 });
+
+app.use('/users', routes.user);
 
 app.listen(process.env.PORT, () =>
   console.log(`Example app listening on port ${process.env.PORT}!`)
