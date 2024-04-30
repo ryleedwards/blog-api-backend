@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 import User from '../models/user.js';
 
 // return all users
-export const user_list = asyncHandler(async (req, res, next) => {
+export const user_list_all = asyncHandler(async (req, res, next) => {
   const allUsers = await User.find()
     .sort({
       lastName: 1,
@@ -11,5 +11,5 @@ export const user_list = asyncHandler(async (req, res, next) => {
       username: 1,
     })
     .exec();
-  res.send(allUsers);
+  res.json(allUsers);
 });
