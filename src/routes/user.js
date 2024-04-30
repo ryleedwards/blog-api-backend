@@ -3,6 +3,10 @@ import * as userController from '../controllers/userController.js';
 
 const router = Router();
 
-router.get('/', userController.user_list_all);
+// Get all users
+router.get('/', userController.getUsers);
+
+// Get specific user
+router.get('/:userId', userController.getUser);
 
 export default router;
