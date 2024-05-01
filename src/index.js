@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import models from './models/index.js';
 import routes from './routes/index.js';
 import mongoose from 'mongoose';
+import CustomError from './utils/CustomError.js';
+import globalErrorHandler from './controllers/errorController.js';
 
 const app = express();
 
@@ -23,6 +25,16 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', routes.user);
+
+// Error handling
+
+// Unhandled routes
+app.all('*', (req, res, next) => {
+  next(new CustomError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
+
+// Unhandled errors
+app.use(globalErrorHandler);
 
 app.listen(process.env.PORT, () =>
   console.log(`Example app listening on port ${process.env.PORT}!`)
