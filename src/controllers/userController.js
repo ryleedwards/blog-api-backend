@@ -135,5 +135,8 @@ export const updateUser = [
 export const deleteUser = asyncHandler(async (req, res, next) => {
   const { userId } = req.params;
   const deletedUser = await User.findByIdAndDelete(userId);
+  if (deletedUser === null) {
+    next(new CustomError('User not found', 404));
+  }
   res.status(200).json({ message: 'User deleted', _id: deletedUser._id });
 });
