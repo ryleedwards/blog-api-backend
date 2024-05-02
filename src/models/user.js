@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { DateTime } from 'luxon';
 import mongooseUniqueValidator from 'mongoose-unique-validator';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new Schema(
   {
@@ -14,12 +15,26 @@ const userSchema = new Schema(
     },
     firstName: { type: String },
     lastName: { type: String },
-    hash: { type: String },
-    salt: { type: String },
+    password: { type: String, required: true, select: false },
     role: { type: mongoose.Types.ObjectId, ref: 'Role' },
   },
   { timestamps: true }
 );
+
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
+
+  const hashedPassword = await bcrypt.hash(this.password, 10);
+  this.password = hashedPassword;
+  next();
+});
+
+userSchema.methods.comparePassword = async function (password) {
+  const isMatch = await bcrypt.compare(password, this.password);
+  return isMatch;
+};
 
 userSchema.plugin(mongooseUniqueValidator, { message: 'is already taken.' });
 

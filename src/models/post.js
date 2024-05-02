@@ -7,7 +7,7 @@ const postSchema = new Schema(
       ref: 'User',
       required: true,
     },
-    title: { type: String },
+    title: { type: String, required: true },
     metaTitle: { type: String },
     published: { type: Boolean },
     publishedAt: { type: Date },
