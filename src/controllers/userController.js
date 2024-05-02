@@ -128,6 +128,9 @@ export const updateUser = [
       const updatedUser = await User.findByIdAndUpdate(userId, user, {
         returnDocument: 'after',
       });
+      if (updatedUser === null) {
+        next(new CustomError('User not found', 404));
+      }
       res.status(200).json(updatedUser);
     }
   }),
