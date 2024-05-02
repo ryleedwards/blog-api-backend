@@ -66,9 +66,8 @@ export const createUser = [
         email: req.body.email,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        password: req.body.password,
       });
-
-      // TODO - password hashing
 
       const result = await user.save();
       res.status(201).json(result);
