@@ -19,6 +19,9 @@ export const getUsers = asyncHandler(async (req, res, next) => {
 export const getUser = asyncHandler(async (req, res, next) => {
   const { userId } = req.params;
   const user = await User.findById(userId).exec();
+  if (user === null) {
+    next(new CustomError('User not found', 404));
+  }
   res.json(user);
 });
 
