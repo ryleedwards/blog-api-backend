@@ -120,6 +120,7 @@ export const updateUser = [
         email: req.body.email,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        password: req.body.password,
       });
       const updatedUser = await User.findByIdAndUpdate(userId, user, {
         returnDocument: 'after',
