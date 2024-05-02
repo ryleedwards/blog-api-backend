@@ -24,7 +24,9 @@ app.get('/', (req, res) => {
   res.send('hello world');
 });
 
+// Routes
 app.use('/users', routes.user);
+app.use('/posts', routes.post);
 
 // Error handling
 
