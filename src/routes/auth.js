@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
+import jwt from 'jsonwebtoken';
+import JwtStrategy, { ExtractJwt } from 'passport-jwt';
 import User from '../models/user.js';
 
 passport.use(
@@ -10,7 +12,6 @@ passport.use(
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
-      console.log(password);
       const match = await user.comparePassword(password);
       if (!match) {
         return done(null, false, { message: 'Incorrect password.' });
@@ -27,10 +28,17 @@ const router = Router();
 
 router.post(
   '/login',
+  // Use local strategy to authenticate user
   passport.authenticate('local', { session: false }),
+  // If user is authenticated, return access token
   (req, res) => {
-    res.json(req.user);
-    // TODO - issue JWT
+    // Generate access token
+    const accessToken = jwt.sign(
+      req.user.username,
+      process.env.ACCESS_TOKEN_SECRET
+    );
+    // Return access token
+    res.json({ message: 'Auth success', accessToken });
   }
 );
 
