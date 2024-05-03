@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/users', routes.user);
 app.use('/posts', routes.post);
+app.use('/', routes.auth);
 
 // Error handling
 
