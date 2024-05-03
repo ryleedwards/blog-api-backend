@@ -2,7 +2,8 @@ import { Router } from 'express';
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import jwt from 'jsonwebtoken';
-import JwtStrategy, { ExtractJwt } from 'passport-jwt';
+import passportJwt from 'passport-jwt';
+const { Strategy: JwtStrategy, ExtractJwt } = passportJwt;
 import User from '../models/user.js';
 
 passport.use(
@@ -24,6 +25,22 @@ passport.use(
   })
 );
 
+const opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = process.env.ACCESS_TOKEN_SECRET;
+passport.use(
+  new JwtStrategy(opts, async (jwt_payload, done) => {
+    try {
+      const user = await User.findOne({ id: jwt_payload.sub });
+      if (!user) {
+        return done(null, false);
+      } else return done(null, user);
+    } catch (err) {
+      done(err);
+    }
+  })
+);
+
 const router = Router();
 
 router.post(
@@ -39,6 +56,14 @@ router.post(
     );
     // Return access token
     res.json({ message: 'Auth success', accessToken });
+  }
+);
+
+router.get(
+  '/protected',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    return res.status(200).send('YAY! this is a protected route');
   }
 );
 
