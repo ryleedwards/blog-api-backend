@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as commentController from '../controllers/commentController.js';
+import passport from 'passport';
 
 const router = Router();
 
@@ -13,14 +14,26 @@ router.get('/:commentId', commentController.getComment);
 
 // Create comment
 
-router.post('/', commentController.createComment);
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  commentController.createComment
+);
 
 // Update comment
 
-router.put('/:commentId', commentController.updateComment);
+router.put(
+  '/:commentId',
+  passport.authenticate('jwt', { session: false }),
+  commentController.updateComment
+);
 
 // Delete comment
 
-router.delete('/:commentId', commentController.deleteComment);
+router.delete(
+  '/:commentId',
+  passport.authenticate('jwt', { session: false }),
+  commentController.deleteComment
+);
 
 export default router;

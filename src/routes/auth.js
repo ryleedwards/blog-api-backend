@@ -59,12 +59,4 @@ router.post(
   }
 );
 
-router.get(
-  '/protected',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    return res.status(200).send('YAY! this is a protected route');
-  }
-);
-
 export default router;
