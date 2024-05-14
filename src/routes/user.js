@@ -19,7 +19,11 @@ router.get(
 );
 
 // Create user
-router.post('/', userController.createUser);
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  userController.createUser
+);
 
 // Update user
 router.put(
