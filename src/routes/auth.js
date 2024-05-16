@@ -54,8 +54,17 @@ router.post(
       req.user.username,
       process.env.ACCESS_TOKEN_SECRET
     );
-    // Return access token
-    res.json({ message: 'Auth success', accessToken });
+
+    // If user is authenticated, return trimmed user info
+    const user = {
+      username: req.user.username,
+      email: req.user.email,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+    };
+
+    // Return access token and trimmed user info
+    res.json({ accessToken: accessToken, user: user });
   }
 );
 
