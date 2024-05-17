@@ -11,6 +11,7 @@ export const getUsers = asyncHandler(async (req, res, next) => {
       firstName: 1,
       username: 1,
     })
+    .select('-password')
     .exec();
   res.json(allUsers);
 });
@@ -18,7 +19,7 @@ export const getUsers = asyncHandler(async (req, res, next) => {
 // return specific user by ID
 export const getUser = asyncHandler(async (req, res, next) => {
   const { userId } = req.params;
-  const user = await User.findById(userId).exec();
+  const user = await User.findById(userId).select('-password').exec();
   if (user === null) {
     next(new CustomError('User not found', 404));
   }
